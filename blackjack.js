@@ -37,6 +37,8 @@ class Player {
 
   draw(card) {
     this.hand.push(card);
+    this.getHandPoints();
+    console.log(this);
   }
 
   resetHand() {
@@ -67,33 +69,44 @@ class Game {
       console.log("Player Over 21");
       this.house.score++;
       this.resetHands();
+      this.printScores();
+      console.log("\n");
       return true;
     } else if (this.player.getHandPoints() == 21) {
       console.log("Player BlackJack!");
       this.player.score++;
       this.resetHands();
+      this.printScores();
+      console.log("\n");
       return true;
     }
     if (this.house.getHandPoints() > 21) {
       console.log("House Over 21");
       this.player.score++;
       this.resetHands();
+      this.printScores();
+      console.log("\n");
       return true;
     } else if (this.house.getHandPoints() == 21) {
       console.log("House BlackJack!");
       this.house.score++;
       this.resetHands();
+      this.printScores();
+      console.log("\n");
       return true;
     }
     return false;
+  }
+
+  printScores(){
+    console.log("Player Score: " + this.player.score);
+    console.log("House Score: " + this.house.score);
   }
 
   retreat() {
     let opt = false;
     while (this.house.getHandPoints() <= this.player.getHandPoints()){
         let c = this.deck.cards.pop();
-        console.log("House Draws:");
-        console.log(c);
         this.house.draw(c);
         let opt = this.check()
         if (opt){
@@ -107,33 +120,31 @@ class Game {
     let houseDiff = 21 - this.house.getHandPoints();
     if (playerDiff < houseDiff) {
       console.log("Retreat, player wins with " + this.player.getHandPoints());
-      console.log("\n");
       this.player.score++;
       this.resetHands();
+      this.printScores();
+      console.log("\n");
     } else {
       console.log("Retreat, house wins with " + this.house.getHandPoints());
-      console.log("\n");
       this.house.score++;
       this.resetHands();
+      this.printScores();
+      console.log("\n");
     }
   }
 
   draw() {
     let c = this.deck.cards.pop();
-    console.log("Player Draws:");
-    console.log(c);
     this.player.draw(c);
     let opt = this.check();
-    if (!opt) {
+    if (this.player.getHandPoints() < this.house.getHandPoints()){
+      console.log(this.house);
+    }
+    if (!opt && this.player.getHandPoints() > this.house.getHandPoints()) {
       c = this.deck.cards.pop();
-      console.log("House Draws:");
-      console.log(c);
       this.house.draw(c);
       this.check();
     }
-    console.log(this.player);
-    console.log(this.house);
-    console.log("\n");
   }
 
   resetHands() {
@@ -152,6 +163,7 @@ for (let i = 0; i < games; i++) {
   console.log("\n");
   while (g.deck.cards.length > 6) {
     g.draw();
+    console.log("\n");
     if (g.player.getHandPoints() >= 16) {
       g.retreat();
     }
