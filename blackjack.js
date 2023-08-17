@@ -89,7 +89,20 @@ class Game {
   }
 
   retreat() {
-
+    let opt = false;
+    while (this.house.getHandPoints() < this.player.getHandPoints()){
+        let c = this.deck.cards.pop();
+        console.log("House Draws:");
+        console.log(c);
+        this.house.draw(c);
+        let opt = this.check()
+        if (opt){
+            return;
+        }
+    }
+    if (opt){
+        return;
+    }
     let playerDiff = 21 - this.player.getHandPoints();
     let houseDiff = 21 - this.house.getHandPoints();
     if (playerDiff < houseDiff) {
@@ -131,7 +144,7 @@ class Game {
 
 finalPlayerScore = 0;
 finalHouseScore = 0;
-games = 1000;
+games = 10;
 
 for (let i = 0; i < games; i++) {
   let g = new Game("g");
