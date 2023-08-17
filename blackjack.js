@@ -90,7 +90,7 @@ class Game {
 
   retreat() {
     let opt = false;
-    while (this.house.getHandPoints() < this.player.getHandPoints()){
+    while (this.house.getHandPoints() <= this.player.getHandPoints()){
         let c = this.deck.cards.pop();
         console.log("House Draws:");
         console.log(c);
@@ -144,13 +144,13 @@ class Game {
 
 finalPlayerScore = 0;
 finalHouseScore = 0;
-games = 10;
+games = 1000;
 
 for (let i = 0; i < games; i++) {
   let g = new Game("g");
   console.log(g.deck.cards);
   console.log("\n");
-  while (g.deck.cards.length > 4) {
+  while (g.deck.cards.length > 6) {
     g.draw();
     if (g.player.getHandPoints() >= 16) {
       g.retreat();
